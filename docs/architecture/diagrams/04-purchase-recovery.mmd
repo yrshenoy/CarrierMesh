@@ -1,0 +1,15 @@
+flowchart TD
+  A[Label purchase requested] --> B[Persist unique ERP operation ID]
+  B --> C[Submit provider purchase]
+  C --> D{Definitive result?}
+  D -->|Success| S[Persist label and package tracking]
+  D -->|Confirmed no purchase| F[Record definitive failure]
+  D -->|Timeout / ambiguous| U[OUTCOME_UNKNOWN]
+  U --> L{Safe provider lookup available?}
+  L -->|Yes| Q[Non-purchasing status lookup]
+  L -->|No| M[Manual reconciliation]
+  Q --> R{Outcome conclusively known?}
+  R -->|Purchased| S
+  R -->|Not purchased| F
+  R -->|Still uncertain| M
+  M --> X[Block duplicate purchase until resolved]
