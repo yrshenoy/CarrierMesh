@@ -9,87 +9,19 @@
 ## Contents
 
 - [1. Executive summary](#1-executive-summary)
-- [1. Provider neutrality: ERP workflows consume common business concepts; adapters translate provider-](#1-provider-neutrality-erp-workflows-consume-common-business-concepts-adapters-translate-provider-)
-- [2. Customer ownership: Customers control their own aggregator accounts and carrier relationships.](#2-customer-ownership-customers-control-their-own-aggregator-accounts-and-carrier-relationships)
-- [3. No silent financial side effects: Rate shopping never buys labels; uncertain label/void outcomes are](#3-no-silent-financial-side-effects-rate-shopping-never-buys-labels-uncertain-labelvoid-outcomes-are)
-- [4. Clear boundaries: Purchasing a label, receiving tracking updates, voiding a label, or generating a manifest](#4-clear-boundaries-purchasing-a-label-receiving-tracking-updates-voiding-a-label-or-generating-a-manifest)
-- [5. Explicit consent for consequential changes: The user must opt into address-warning overrides, alternate](#5-explicit-consent-for-consequential-changes-the-user-must-opt-into-address-warning-overrides-alternate)
-- [6. Traceable decisions: The originating connection, carrier account, transaction references, and audit](#6-traceable-decisions-the-originating-connection-carrier-account-transaction-references-and-audit)
 - [2. Customer and user context](#2-customer-and-user-context)
 - [3. Goals and measures](#3-goals-and-measures)
 - [4. Product scope](#4-product-scope)
 - [5. Domain definitions](#5-domain-definitions)
 - [6. End-to-end user journeys](#6-end-to-end-user-journeys)
-- [1. Shipping administrator selects a supported aggregator type and enters the appropriate authorization](#1-shipping-administrator-selects-a-supported-aggregator-type-and-enters-the-appropriate-authorization)
-- [2. ERP checks authorization against the aggregator and records the connection under the correct tenant.](#2-erp-checks-authorization-against-the-aggregator-and-records-the-connection-under-the-correct-tenant)
-- [3. ERP retrieves eligible carrier accounts and services already configured by the customer at the aggregator.](#3-erp-retrieves-eligible-carrier-accounts-and-services-already-configured-by-the-customer-at-the-aggregator)
-- [4. Administrator can refresh and choose which connections/services are available for ERP shipping.](#4-administrator-can-refresh-and-choose-which-connectionsservices-are-available-for-erp-shipping)
-- [5. Historical shipping records preserve their original connection even if the default changes or a connection](#5-historical-shipping-records-preserve-their-original-connection-even-if-the-default-changes-or-a-connection)
-- [1. An authorized ERP administrator connects a customer-owned provider account through a provider-supported](#1-an-authorized-erp-administrator-connects-a-customer-owned-provider-account-through-a-provider-supported)
-- [2. ERP securely stores or references credentials and maps the tenant/provider connection to external customer,](#2-erp-securely-stores-or-references-credentials-and-maps-the-tenantprovider-connection-to-external-customer)
-- [3. ERP retrieves and refreshes available carrier accounts and service metadata; administrator can select permitted](#3-erp-retrieves-and-refreshes-available-carrier-accounts-and-service-metadata-administrator-can-select-permitted)
-- [4. Credential rotation, revocation or disconnect blocks inappropriate future operations while preserving historical](#4-credential-rotation-revocation-or-disconnect-blocks-inappropriate-future-operations-while-preserving-historical)
-- [1. Operator supplies sender/recipient details, ship date, package descriptions, and optional carrier filters.](#1-operator-supplies-senderrecipient-details-ship-date-package-descriptions-and-optional-carrier-filters)
-- [2. ERP validates input, identifies selected eligible connections, and dispatches provider requests](#2-erp-validates-input-identifies-selected-eligible-connections-and-dispatches-provider-requests)
-- [3. ERP waits for all responses or a configurable global deadline.](#3-erp-waits-for-all-responses-or-a-configurable-global-deadline)
-- [4. ERP normalizes successful results, keeps separate offers from the same carrier through different](#4-erp-normalizes-successful-results-keeps-separate-offers-from-the-same-carrier-through-different)
-- [5. Operator selects an eligible quote, or abandons rating without side effects.](#5-operator-selects-an-eligible-quote-or-abandons-rating-without-side-effects)
-- [1. Operator starts from a fulfillment or suitable ERP shipping context.](#1-operator-starts-from-a-fulfillment-or-suitable-erp-shipping-context)
-- [2. Operator chooses a previous rate or selects aggregator, carrier account, and service directly.](#2-operator-chooses-a-previous-rate-or-selects-aggregator-carrier-account-and-service-directly)
-- [3. ERP verifies addresses, package descriptions, support for multi-package shipment, and quote consistency](#3-erp-verifies-addresses-package-descriptions-support-for-multi-package-shipment-and-quote-consistency)
-- [4. ERP records an operation identity before the external purchase request.](#4-erp-records-an-operation-identity-before-the-external-purchase-request)
-- [5. Provider adapter creates one logical shipment with one or more package labels.](#5-provider-adapter-creates-one-logical-shipment-with-one-or-more-package-labels)
-- [6. ERP stores label and tracking references, cost and document access without completing fulfillment.](#6-erp-stores-label-and-tracking-references-cost-and-document-access-without-completing-fulfillment)
-- [7. If outcome is uncertain, ERP records it for reconciliation and does not blindly repurchase.](#7-if-outcome-is-uncertain-erp-records-it-for-reconciliation-and-does-not-blindly-repurchase)
-- [1. Operator starts from an existing outbound shipment or opens a standalone return request.](#1-operator-starts-from-an-existing-outbound-shipment-or-opens-a-standalone-return-request)
-- [2. Linked return defaults to original provider but may use another compatible connection.](#2-linked-return-defaults-to-original-provider-but-may-use-another-compatible-connection)
-- [3. Operator reviews reverse-direction addresses, package details, service, and reference to any return](#3-operator-reviews-reverse-direction-addresses-package-details-service-and-reference-to-any-return)
-- [4. ERP creates a return label through the selected provider, preserving both the return's actual provider and](#4-erp-creates-a-return-label-through-the-selected-provider-preserving-both-the-returns-actual-provider-and)
-- [5. No inventory receipt or refund is posted solely because a return label was created.](#5-no-inventory-receipt-or-refund-is-posted-solely-because-a-return-label-was-created)
-- [1. Operator requests void for a single-package shipment or an entire multi-package shipment.](#1-operator-requests-void-for-a-single-package-shipment-or-an-entire-multi-package-shipment)
-- [2. ERP resolves the original connection; validates carrier/provider restrictions and prior status.](#2-erp-resolves-the-original-connection-validates-carrierprovider-restrictions-and-prior-status)
-- [3. ERP submits the void without switching providers or splitting the request into package voids.](#3-erp-submits-the-void-without-switching-providers-or-splitting-the-request-into-package-voids)
-- [4. ERP records accepted, rejected, or uncertain state. Refund settlement is separate from void acceptance.](#4-erp-records-accepted-rejected-or-uncertain-state-refund-settlement-is-separate-from-void-acceptance)
-- [5. ERP fulfillment and inventory status are unchanged.](#5-erp-fulfillment-and-inventory-status-are-unchanged)
-- [1. Operator selects explicit ERP labels or provides warehouse/date/carrier filters.](#1-operator-selects-explicit-erp-labels-or-provides-warehousedatecarrier-filters)
-- [2. ERP resolves criteria to an exact eligible label set, preserving full multi-package groups.](#2-erp-resolves-criteria-to-an-exact-eligible-label-set-preserving-full-multi-package-groups)
-- [3. ERP groups labels as required by originating connection, carrier, origin and date.](#3-erp-groups-labels-as-required-by-originating-connection-carrier-origin-and-date)
-- [4. ERP submits exact provider label references to the applicable adapter; an adapter must not broaden the](#4-erp-submits-exact-provider-label-references-to-the-applicable-adapter-an-adapter-must-not-broaden-the)
-- [5. ERP records manifests, included labels, errors and document references.](#5-erp-records-manifests-included-labels-errors-and-document-references)
-- [1. User may validate addresses directly from ERP screens.](#1-user-may-validate-addresses-directly-from-erp-screens)
-- [2. Before purchasing outbound or return labels, ERP checks validation status and revalidates missing,](#2-before-purchasing-outbound-or-return-labels-erp-checks-validation-status-and-revalidates-missing)
-- [3. Valid addresses proceed; warnings and unverified results require explicit acknowledgment; invalid results](#3-valid-addresses-proceed-warnings-and-unverified-results-require-explicit-acknowledgment-invalid-results)
-- [4. After a label exists, user can request its latest tracking state on demand.](#4-after-a-label-exists-user-can-request-its-latest-tracking-state-on-demand)
-- [5. Neither address validation nor tracking changes ERP fulfillment status.](#5-neither-address-validation-nor-tracking-changes-erp-fulfillment-status)
-- [1. A customer administrator opens Shipping Integration Logs and filters by provider, operation, date, shipment or](#1-a-customer-administrator-opens-shipping-integration-logs-and-filters-by-provider-operation-date-shipment-or)
-- [2. ERP displays the matching request attempts, sanitized payloads, responses, errors and provider correlation IDs](#2-erp-displays-the-matching-request-attempts-sanitized-payloads-responses-errors-and-provider-correlation-ids)
-- [3. Administrator exports a redacted support package for direct submission to the provider; an ERP-side failure is](#3-administrator-exports-a-redacted-support-package-for-direct-submission-to-the-provider-an-erp-side-failure-is)
-- [4. Internal ERP revenue-share audit records are not accessible by this workflow or any customer-facing endpoint.](#4-internal-erp-revenue-share-audit-records-are-not-accessible-by-this-workflow-or-any-customer-facing-endpoint)
 - [7. Functional requirements](#7-functional-requirements)
 - [8. Business rules and cross-cutting invariants](#8-business-rules-and-cross-cutting-invariants)
 - [9. Non-functional requirements — PROPOSED for review](#9-non-functional-requirements-proposed-for-review)
 - [10. Acceptance criteria and release gate](#10-acceptance-criteria-and-release-gate)
-- [1. Tenant isolation: Customer A cannot use or discover Customer B's connections, carrier accounts, labels or](#1-tenant-isolation-customer-a-cannot-use-or-discover-customer-bs-connections-carrier-accounts-labels-or)
-- [2. Rating across providers: A single request returns normalized rates from two connected aggregators,](#2-rating-across-providers-a-single-request-returns-normalized-rates-from-two-connected-aggregators)
-- [3. Partial rating: A timeout from Aggregator B does not hide valid results from Aggregator A; the response](#3-partial-rating-a-timeout-from-aggregator-b-does-not-hide-valid-results-from-aggregator-a-the-response)
-- [4. Direct and quoted labels: Both creation routes generate a shipment through the intended provider.](#4-direct-and-quoted-labels-both-creation-routes-generate-a-shipment-through-the-intended-provider)
-- [5. Multi-package rejection: Unsupported multi-piece service returns an actionable error and does not](#5-multi-package-rejection-unsupported-multi-piece-service-returns-an-actionable-error-and-does-not)
-- [6. Unknown purchase result: A timeout after label submission does not automatically trigger a second](#6-unknown-purchase-result-a-timeout-after-label-submission-does-not-automatically-trigger-a-second)
-- [7. Fulfillment independence: Neither label creation nor voiding nor tracking alters ERP fulfillment status.](#7-fulfillment-independence-neither-label-creation-nor-voiding-nor-tracking-alters-erp-fulfillment-status)
-- [8. Return flexibility: Linked return preserves original ERP relationship when generated through a different](#8-return-flexibility-linked-return-preserves-original-erp-relationship-when-generated-through-a-different)
-- [9. Whole-group void: Partial void of a multi-piece shipment is not exposed; original provider routing is](#9-whole-group-void-partial-void-of-a-multi-piece-shipment-is-not-exposed-original-provider-routing-is)
-- [10. Manifest correctness: Provider receives only the explicit, eligible, ERP-selected labels and complete](#10-manifest-correctness-provider-receives-only-the-explicit-eligible-erp-selected-labels-and-complete)
-- [11. Address control: Warning/unverified override requires explicit acknowledgment; invalid address blocks](#11-address-control-warningunverified-override-requires-explicit-acknowledgment-invalid-address-blocks)
-- [12. Tracking scope: On-demand tracking works for integration-created packages; external numbers and](#12-tracking-scope-on-demand-tracking-works-for-integration-created-packages-external-numbers-and)
 - [11. Risks and trade-offs](#11-risks-and-trade-offs)
 - [12. Engineering / product trade-offs demonstrated](#12-engineering-product-trade-offs-demonstrated)
 - [13. Dependencies and assumptions](#13-dependencies-and-assumptions)
 - [14. Release sequencing — PROPOSED](#14-release-sequencing-proposed)
-- [1. Foundation: tenant-scoped connections; carrier discovery; error normalization and secure credential](#1-foundation-tenant-scoped-connections-carrier-discovery-error-normalization-and-secure-credential)
-- [2. Shopping: flexible rates across selected aggregators, standardized comparisons, and partial failures.](#2-shopping-flexible-rates-across-selected-aggregators-standardized-comparisons-and-partial-failures)
-- [3. Outbound execution: direct/quoted labels, multi-package support, safe operation lifecycle, separate](#3-outbound-execution-directquoted-labels-multi-package-support-safe-operation-lifecycle-separate)
-- [4. Operational completion: linked/standalone returns, whole-group voids, manifest generation, address](#4-operational-completion-linkedstandalone-returns-whole-group-voids-manifest-generation-address)
-- [5. Readiness: certify each provider’s direct billing, authorization, carrier/service discovery, capability model,](#5-readiness-certify-each-providers-direct-billing-authorization-carrierservice-discovery-capability-model)
 - [15. Design decisions resolved; remaining implementation verification](#15-design-decisions-resolved-remaining-implementation-verification)
 - [16. Decision D-018 — Customer-direct provider billing (AGREED)](#16-decision-d-018-customer-direct-provider-billing-agreed)
 - [17. Decision D-019 — Credential and carrier configuration persistence (AGREED)](#17-decision-d-019-credential-and-carrier-configuration-persistence-agreed)
@@ -158,11 +90,11 @@ downstream transactions to the customer's current default provider.
 
 ### 1.3 Core product principles
 
-## 1.    Provider neutrality: ERP workflows consume common business concepts; adapters translate provider-
+1.    Provider neutrality: ERP workflows consume common business concepts; adapters translate provider-
 
 specific operations.
 
-## 2.    Customer ownership: Customers control their own aggregator accounts and carrier relationships.
+2.    Customer ownership: Customers control their own aggregator accounts and carrier relationships.
 
 Customer-direct billing (D-018 — AGREED): The ERP customer owns the billing relationship with its shipping
 aggregator and/or carrier. The ERP integrator does not collect shipping charges, fund accounts, hold payment
@@ -172,19 +104,19 @@ Security and support boundaries (D-019–D-021 — AGREED): Provider credentials
 administrators can inspect sanitized, tenant-scoped API diagnostics; revenue-share records are internal to the ERP
 integrator and never customer-visible.
 
-## 3.    No silent financial side effects: Rate shopping never buys labels; uncertain label/void outcomes are
+3.    No silent financial side effects: Rate shopping never buys labels; uncertain label/void outcomes are
 
 reconciled rather than blindly retried.
 
-## 4.    Clear boundaries: Purchasing a label, receiving tracking updates, voiding a label, or generating a manifest
+4.    Clear boundaries: Purchasing a label, receiving tracking updates, voiding a label, or generating a manifest
 
 never automatically completes an ERP fulfillment.
 
-## 5.    Explicit consent for consequential changes: The user must opt into address-warning overrides, alternate
+5.    Explicit consent for consequential changes: The user must opt into address-warning overrides, alternate
 
 providers for linked returns, and any manual split of unsupported multi-package shipments.
 
-## 6.    Traceable decisions: The originating connection, carrier account, transaction references, and audit
+6.    Traceable decisions: The originating connection, carrier account, transaction references, and audit
 
 history persist throughout a shipment's lifecycle.
 
@@ -421,7 +353,7 @@ sequenceDiagram
 
 #### J-01 Connect provider and select shipping services
 
-## 1.    Shipping administrator selects a supported aggregator type and enters the appropriate authorization
+1.    Shipping administrator selects a supported aggregator type and enters the appropriate authorization
 
 details.
 
@@ -431,31 +363,31 @@ relationship outside the ERP; the ERP may link to provider-hosted onboarding but
 The customer authorizes the ERP integration using a provider-supported customer credential or delegated
 authorization mechanism; customer account provisioning by the ERP integrator is not mandatory.
 
-## 2.    ERP checks authorization against the aggregator and records the connection under the correct tenant.
+2.    ERP checks authorization against the aggregator and records the connection under the correct tenant.
 
-## 3.    ERP retrieves eligible carrier accounts and services already configured by the customer at the aggregator.
+3.    ERP retrieves eligible carrier accounts and services already configured by the customer at the aggregator.
 
-## 4.    Administrator can refresh and choose which connections/services are available for ERP shipping.
+4.    Administrator can refresh and choose which connections/services are available for ERP shipping.
 
-## 5.    Historical shipping records preserve their original connection even if the default changes or a connection
+5.    Historical shipping records preserve their original connection even if the default changes or a connection
 
 is disconnected.
 
 J-01A Administer credentials and carrier configuration
 
-## 1. An authorized ERP administrator connects a customer-owned provider account through a provider-supported
+1. An authorized ERP administrator connects a customer-owned provider account through a provider-supported
 
 authorization method; any partner integration credential is managed separately and never displayed.
 
-## 2. ERP securely stores or references credentials and maps the tenant/provider connection to external customer,
+2. ERP securely stores or references credentials and maps the tenant/provider connection to external customer,
 
 carrier-account, carrier and service identifiers.
 
-## 3. ERP retrieves and refreshes available carrier accounts and service metadata; administrator can select permitted
+3. ERP retrieves and refreshes available carrier accounts and service metadata; administrator can select permitted
 
 defaults without losing historic provider identifiers.
 
-## 4. Credential rotation, revocation or disconnect blocks inappropriate future operations while preserving historical
+4. Credential rotation, revocation or disconnect blocks inappropriate future operations while preserving historical
 
 shipment references.
 
@@ -485,111 +417,111 @@ sequenceDiagram
 
 #### J-02 Compare rates across connected aggregators
 
-## 1.    Operator supplies sender/recipient details, ship date, package descriptions, and optional carrier filters.
+1.    Operator supplies sender/recipient details, ship date, package descriptions, and optional carrier filters.
 
-## 2.    ERP validates input, identifies selected eligible connections, and dispatches provider requests
+2.    ERP validates input, identifies selected eligible connections, and dispatches provider requests
 
 concurrently.
 
-## 3.    ERP waits for all responses or a configurable global deadline.
+3.    ERP waits for all responses or a configurable global deadline.
 
-## 4.    ERP normalizes successful results, keeps separate offers from the same carrier through different
+4.    ERP normalizes successful results, keeps separate offers from the same carrier through different
 
 aggregators, and reports failed/timed-out sources.
 
-## 5.    Operator selects an eligible quote, or abandons rating without side effects.
+5.    Operator selects an eligible quote, or abandons rating without side effects.
 
 #### J-03 Purchase an outbound label
 
-## 1.    Operator starts from a fulfillment or suitable ERP shipping context.
+1.    Operator starts from a fulfillment or suitable ERP shipping context.
 
-## 2.    Operator chooses a previous rate or selects aggregator, carrier account, and service directly.
+2.    Operator chooses a previous rate or selects aggregator, carrier account, and service directly.
 
-## 3.    ERP verifies addresses, package descriptions, support for multi-package shipment, and quote consistency
+3.    ERP verifies addresses, package descriptions, support for multi-package shipment, and quote consistency
 
 when applicable.
 
-## 4.    ERP records an operation identity before the external purchase request.
+4.    ERP records an operation identity before the external purchase request.
 
-## 5.    Provider adapter creates one logical shipment with one or more package labels.
+5.    Provider adapter creates one logical shipment with one or more package labels.
 
-## 6.    ERP stores label and tracking references, cost and document access without completing fulfillment.
+6.    ERP stores label and tracking references, cost and document access without completing fulfillment.
 
-## 7.    If outcome is uncertain, ERP records it for reconciliation and does not blindly repurchase.
+7.    If outcome is uncertain, ERP records it for reconciliation and does not blindly repurchase.
 
 #### J-04 Create a return label
 
-## 1.    Operator starts from an existing outbound shipment or opens a standalone return request.
+1.    Operator starts from an existing outbound shipment or opens a standalone return request.
 
-## 2.    Linked return defaults to original provider but may use another compatible connection.
+2.    Linked return defaults to original provider but may use another compatible connection.
 
-## 3.    Operator reviews reverse-direction addresses, package details, service, and reference to any return
+3.    Operator reviews reverse-direction addresses, package details, service, and reference to any return
 
 authorization.
 
-## 4.    ERP creates a return label through the selected provider, preserving both the return's actual provider and
+4.    ERP creates a return label through the selected provider, preserving both the return's actual provider and
 
 its original ERP shipment link (if any).
 
-## 5.    No inventory receipt or refund is posted solely because a return label was created.
+5.    No inventory receipt or refund is posted solely because a return label was created.
 
 #### J-05 Void an existing label group
 
-## 1.    Operator requests void for a single-package shipment or an entire multi-package shipment.
+1.    Operator requests void for a single-package shipment or an entire multi-package shipment.
 
-## 2.    ERP resolves the original connection; validates carrier/provider restrictions and prior status.
+2.    ERP resolves the original connection; validates carrier/provider restrictions and prior status.
 
-## 3.    ERP submits the void without switching providers or splitting the request into package voids.
+3.    ERP submits the void without switching providers or splitting the request into package voids.
 
-## 4.    ERP records accepted, rejected, or uncertain state. Refund settlement is separate from void acceptance.
+4.    ERP records accepted, rejected, or uncertain state. Refund settlement is separate from void acceptance.
 
-## 5.    ERP fulfillment and inventory status are unchanged.
+5.    ERP fulfillment and inventory status are unchanged.
 
 #### J-06 Generate a manifest
 
-## 1.    Operator selects explicit ERP labels or provides warehouse/date/carrier filters.
+1.    Operator selects explicit ERP labels or provides warehouse/date/carrier filters.
 
-## 2.    ERP resolves criteria to an exact eligible label set, preserving full multi-package groups.
+2.    ERP resolves criteria to an exact eligible label set, preserving full multi-package groups.
 
-## 3.    ERP groups labels as required by originating connection, carrier, origin and date.
+3.    ERP groups labels as required by originating connection, carrier, origin and date.
 
-## 4.    ERP submits exact provider label references to the applicable adapter; an adapter must not broaden the
+4.    ERP submits exact provider label references to the applicable adapter; an adapter must not broaden the
 
 selection silently.
 
-## 5.     ERP records manifests, included labels, errors and document references.
+5.     ERP records manifests, included labels, errors and document references.
 
 #### J-07 Validate address and check a shipment
 
-## 1.     User may validate addresses directly from ERP screens.
+1.     User may validate addresses directly from ERP screens.
 
-## 2.     Before purchasing outbound or return labels, ERP checks validation status and revalidates missing,
+2.     Before purchasing outbound or return labels, ERP checks validation status and revalidates missing,
 
 changed, or stale addresses.
 
-## 3.     Valid addresses proceed; warnings and unverified results require explicit acknowledgment; invalid results
+3.     Valid addresses proceed; warnings and unverified results require explicit acknowledgment; invalid results
 
 block label creation.
 
-## 4.     After a label exists, user can request its latest tracking state on demand.
+4.     After a label exists, user can request its latest tracking state on demand.
 
-## 5.     Neither address validation nor tracking changes ERP fulfillment status.
+5.     Neither address validation nor tracking changes ERP fulfillment status.
 
 #### J-08 Investigate a provider shipping issue
 
-## 1. A customer administrator opens Shipping Integration Logs and filters by provider, operation, date, shipment or
+1. A customer administrator opens Shipping Integration Logs and filters by provider, operation, date, shipment or
 
 request ID.
 
-## 2. ERP displays the matching request attempts, sanitized payloads, responses, errors and provider correlation IDs
+2. ERP displays the matching request attempts, sanitized payloads, responses, errors and provider correlation IDs
 
 for that tenant only.
 
-## 3. Administrator exports a redacted support package for direct submission to the provider; an ERP-side failure is
+3. Administrator exports a redacted support package for direct submission to the provider; an ERP-side failure is
 
 identified as such when known.
 
-## 4. Internal ERP revenue-share audit records are not accessible by this workflow or any customer-facing endpoint.
+4. Internal ERP revenue-share audit records are not accessible by this workflow or any customer-facing endpoint.
 
 ## 7. Functional requirements
 
@@ -1005,47 +937,47 @@ Reliability                           Test partial/timeouts, retries, unknown ex
 Detailed scenarios appear in Workflow Scenarios & Acceptance Tests. The V1 product should not be considered
 ready without demonstrating these minimum behaviors in a controlled environment:
 
-## 1.       Tenant isolation: Customer A cannot use or discover Customer B's connections, carrier accounts, labels or
+1.       Tenant isolation: Customer A cannot use or discover Customer B's connections, carrier accounts, labels or
 
 documents.
 
-## 2.       Rating across providers: A single request returns normalized rates from two connected aggregators,
+2.       Rating across providers: A single request returns normalized rates from two connected aggregators,
 
 including distinct offers for the same carrier.
 
-## 3.       Partial rating: A timeout from Aggregator B does not hide valid results from Aggregator A; the response
+3.       Partial rating: A timeout from Aggregator B does not hide valid results from Aggregator A; the response
 
 indicates PARTIAL.
 
-## 4.       Direct and quoted labels: Both creation routes generate a shipment through the intended provider.
+4.       Direct and quoted labels: Both creation routes generate a shipment through the intended provider.
 
-## 5.       Multi-package rejection: Unsupported multi-piece service returns an actionable error and does not
+5.       Multi-package rejection: Unsupported multi-piece service returns an actionable error and does not
 
 intentionally initiate purchase.
 
-## 6.       Unknown purchase result: A timeout after label submission does not automatically trigger a second
+6.       Unknown purchase result: A timeout after label submission does not automatically trigger a second
 
 purchase.
 
-## 7.       Fulfillment independence: Neither label creation nor voiding nor tracking alters ERP fulfillment status.
+7.       Fulfillment independence: Neither label creation nor voiding nor tracking alters ERP fulfillment status.
 
-## 8.     Return flexibility: Linked return preserves original ERP relationship when generated through a different
+8.     Return flexibility: Linked return preserves original ERP relationship when generated through a different
 
 aggregator.
 
-## 9.     Whole-group void: Partial void of a multi-piece shipment is not exposed; original provider routing is
+9.     Whole-group void: Partial void of a multi-piece shipment is not exposed; original provider routing is
 
 honored.
 
-## 10.    Manifest correctness: Provider receives only the explicit, eligible, ERP-selected labels and complete
+10.    Manifest correctness: Provider receives only the explicit, eligible, ERP-selected labels and complete
 
 groups.
 
-## 11.    Address control: Warning/unverified override requires explicit acknowledgment; invalid address blocks
+11.    Address control: Warning/unverified override requires explicit acknowledgment; invalid address blocks
 
 purchase.
 
-## 12.    Tracking scope: On-demand tracking works for integration-created packages; external numbers and
+12.    Tracking scope: On-demand tracking works for integration-created packages; external numbers and
 
 background automation are not supported in V1.
 
@@ -1173,24 +1105,24 @@ eligibility must be validated per provider; any partner revenue-share arrangemen
 
 ## 14. Release sequencing — PROPOSED
 
-## 1.    Foundation: tenant-scoped connections; carrier discovery; error normalization and secure credential
+1.    Foundation: tenant-scoped connections; carrier discovery; error normalization and secure credential
 
 management.
 
-## 2.    Shopping: flexible rates across selected aggregators, standardized comparisons, and partial failures.
+2.    Shopping: flexible rates across selected aggregators, standardized comparisons, and partial failures.
 
-## 3.    Outbound execution: direct/quoted labels, multi-package support, safe operation lifecycle, separate
+3.    Outbound execution: direct/quoted labels, multi-package support, safe operation lifecycle, separate
 
 fulfillment states.
 
-## 4.    Operational completion: linked/standalone returns, whole-group voids, manifest generation, address
+4.    Operational completion: linked/standalone returns, whole-group voids, manifest generation, address
 
 validation, on-demand tracking.
 
 Audit and diagnostics foundation: provider operation/attempt correlation, secured identifier mappings, append-
 only revenue-share evidence, and tenant-scoped redacted diagnostic access.
 
-## 5.    Readiness: certify each provider’s direct billing, authorization, carrier/service discovery, capability model,
+5.    Readiness: certify each provider’s direct billing, authorization, carrier/service discovery, capability model,
 
 tenant isolation and mandatory V1 shipping workflows; instrument lightweight product metrics (D-034–
 D-035).
