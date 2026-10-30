@@ -348,7 +348,7 @@ sequenceDiagram
   ERP->>Vault: Store secret or reference
   ERP->>Provider: Discover connected carriers and services
   Provider-->>ERP: Account-scoped carrier and service identifiers
-  ERP-->>Admin: Configure allowed services; activate connection
+  ERP-->>Admin: Configure allowed services and activate connection
 ```
 
 #### J-01 Connect provider and select shipping services
@@ -407,7 +407,7 @@ sequenceDiagram
     ERP->>B: Get rates
     B-->>ERP: Rates / timeout
   end
-  ERP-->>User: Normalized offers; PARTIAL if needed
+  ERP-->>User: Normalized offers (partial if needed)
   User->>ERP: Confirm label purchase
   ERP->>ERP: Create durable purchase operation
   ERP->>A: Purchase through selected originating connection
