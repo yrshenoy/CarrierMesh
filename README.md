@@ -38,7 +38,7 @@ flowchart LR
 
 ## Documents
 
-- [Product Requirements Document](docs/product/product-requirements.txt)
+- [Product Requirements Document](docs/product/product-requirements.md)
 - [Design decision log](docs/product/decision-log.md)
 - [Integration architecture](docs/architecture/diagrams/01-architecture.mmd)
 - [Customer onboarding](docs/architecture/diagrams/02-onboarding.mmd)
