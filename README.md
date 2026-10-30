@@ -2,7 +2,9 @@
 
 **Provider-neutral ERP shipping integration — an independent engineering-management portfolio case study.**
 
-> **Project status:** Product requirements and solution design. This is a hypothetical integration, not deployed software, not affiliated with an employer or shipping vendor, and not a claim of verified provider support.
+> **Independent portfolio case study — concept and product design, not a live service.** CarrierMesh is a hypothetical ERP shipping-integration concept developed to demonstrate product thinking, requirements definition, provider-neutral architecture, security design, and engineering trade-offs. The documentation describes a proposed implementation, not a production deployment. Shipping-provider capabilities, commercial arrangements, and performance have not been validated or guaranteed.
+
+> **Status:** Product requirements and solution design are documented; CarrierMesh has not been implemented or released. This independent case study is not affiliated with, or endorsed by, any employer or shipping provider.
 
 ## The challenge
 
