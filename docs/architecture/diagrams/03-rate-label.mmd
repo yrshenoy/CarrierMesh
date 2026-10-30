@@ -11,7 +11,7 @@ sequenceDiagram
     ERP->>B: Get rates
     B-->>ERP: Rates / timeout
   end
-  ERP-->>User: Normalized offers; PARTIAL if needed
+  ERP-->>User: Normalized offers (partial if needed)
   User->>ERP: Confirm label purchase
   ERP->>ERP: Create durable purchase operation
   ERP->>A: Purchase through selected originating connection
