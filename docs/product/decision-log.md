@@ -24,4 +24,4 @@ The full PRD contains D-001 through D-036. This quick index summarizes the 15 de
 
 **Important corrections:** D-026 is Option B (basic international), superseding an earlier Option C selection. D-033 is Option A for V1, Option B for a future release.
 
-For detailed rationale, requirements and acceptance criteria, see [PRD v0.4](product-requirements.md).
+For detailed rationale, requirements and acceptance criteria, see [PRD v0.4](product-requirements.txt).
