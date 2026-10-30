@@ -1,0 +1,11 @@
+flowchart TB
+  Admin[Customer administrator] --> ERP[ERP shipping integration]
+  User[ERP shipping user] --> ERP
+  ERP --> Adapter[Provider-neutral adapter layer]
+  Adapter --> SE[ShipEngine / ShipStation API]
+  Adapter --> EP[EasyPost]
+  Adapter --> SS[ShipStation application API]
+  ERP --> Secrets[(Secure credentials)]
+  ERP --> Config[(Tenant carrier and service configuration)]
+  ERP --> Diagnostics[(Customer-admin diagnostic logs)]
+  ERP --> Ledger[(Internal-only revenue-share ledger)]
