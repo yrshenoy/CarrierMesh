@@ -1,0 +1,9 @@
+flowchart TB
+  P[Provider API request / response] --> E[Correlated ERP operation and attempt IDs]
+  E --> D[Sanitized diagnostic log]
+  E --> R[Internal revenue-share business-event ledger]
+  D --> A[Customer administrator - own tenant]
+  D --> S[Authorized ERP support]
+  R --> F[Authorized ERP finance / partner operations]
+  A --> X[Export provider-ready diagnostics]
+  R -. No customer access .-> N[Customer-facing APIs and exports excluded]
