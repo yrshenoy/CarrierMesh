@@ -1,0 +1,18 @@
+sequenceDiagram
+  actor Admin as Customer administrator
+  participant ERP as ERP
+  participant Provider as Shipping provider
+  participant Vault as Secure credential store
+  Admin->>ERP: Select certified provider
+  alt Hosted authorization available
+    ERP->>Provider: Redirect for registration / authorization
+    Provider-->>ERP: Authorization result
+  else API key required
+    Admin->>ERP: Enter provider-issued API key
+  end
+  ERP->>Provider: Validate customer-scoped authorization
+  Provider-->>ERP: Customer account identity
+  ERP->>Vault: Store secret or reference
+  ERP->>Provider: Discover connected carriers and services
+  Provider-->>ERP: Account-scoped carrier and service identifiers
+  ERP-->>Admin: Configure allowed services; activate connection
