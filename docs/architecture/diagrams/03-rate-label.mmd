@@ -1,0 +1,19 @@
+sequenceDiagram
+  actor User as Shipping user
+  participant ERP as ERP shipping service
+  participant A as Provider A
+  participant B as Provider B
+  User->>ERP: Request rates
+  par Rate A
+    ERP->>A: Get rates
+    A-->>ERP: Rates / error
+  and Rate B
+    ERP->>B: Get rates
+    B-->>ERP: Rates / timeout
+  end
+  ERP-->>User: Normalized offers; PARTIAL if needed
+  User->>ERP: Confirm label purchase
+  ERP->>ERP: Create durable purchase operation
+  ERP->>A: Purchase through selected originating connection
+  A-->>ERP: Label response or uncertain outcome
+  ERP-->>User: Label or reconciliation status
